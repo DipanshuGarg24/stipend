@@ -157,33 +157,34 @@ secy@pmo.nic.in'''
 # Set the title of the app
 st.subheader("Make your contribution count by reaching out to the government today to support an increase in our stipend!")
 
+st.success("Thankyou guys for you support , this website is no longer supporting")
 # Create a form
-with st.form(key='student_info_form'):
-    # Create text inputs for the form
-    name = st.text_input("Name")
-    institute_name = st.text_input("Institute Name")
-    branch = st.text_input("Branch")
-    roll_number = st.text_input("Roll Number")
-    email = st.text_input("Email Address")
+# with st.form(key='student_info_form'):
+#     # Create text inputs for the form
+#     name = st.text_input("Name")
+#     institute_name = st.text_input("Institute Name")
+#     branch = st.text_input("Branch")
+#     roll_number = st.text_input("Roll Number")
+#     email = st.text_input("Email Address")
 
-    # Check if all inputs are filled and if the email is valid
-    all_filled = all([name, institute_name, email,branch,roll_number])
-    email_valid = is_valid_email(email)
+#     # Check if all inputs are filled and if the email is valid
+#     all_filled = all([name, institute_name, email,branch,roll_number])
+#     email_valid = is_valid_email(email)
 
-    # Create a submit button that is active only if all fields are filled and email is valid
+#     # Create a submit button that is active only if all fields are filled and email is valid
 
-    # If the form is submitted and valid, display the entered information
-    if st.form_submit_button("Genrate Email"):
-        if (all_filled and email_valid):
-            asyncio.run(send_message(name,institute_name,email))
-            link = genratedata(name,institute_name)
-            with st.spinner("Generating Email ..."):
-                while flag:
-                    pass
-            st.success("Email Generated Successfully!")
-            st.link_button("Click to send Email",link)
-        else:
-            st.error("Please Fill all the details Properly")
+#     # If the form is submitted and valid, display the entered information
+#     if st.form_submit_button("Genrate Email"):
+#         if (all_filled and email_valid):
+#             asyncio.run(send_message(name,institute_name,email))
+#             link = genratedata(name,institute_name)
+#             with st.spinner("Generating Email ..."):
+#                 while flag:
+#                     pass
+#             st.success("Email Generated Successfully!")
+#             st.link_button("Click to send Email",link)
+#         else:
+#             st.error("Please Fill all the details Properly")
 
 st.text("")
 x = st.columns((1,2,1))
