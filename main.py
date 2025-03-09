@@ -195,8 +195,6 @@
 
 
 
-
-
 import streamlit as st
 import json
 import telegram
@@ -213,52 +211,12 @@ CHANNEL_ID = '-1002256449759'  # Replace with your actual channel ID
 # Create a bot instance
 bot = telegram.Bot(token=API_TOKEN)
 
-# async def send_message_with_file(data, file_path=None):
-#     message = json.dumps(data, indent=4)
-#     if file_path:
-#         with open(file_path, 'rb') as f:
-#             await bot.send_document(chat_id=CHANNEL_ID, document=f)
-#     else:
-#         await bot.send_message(chat_id=CHANNEL_ID, text=message)
-
-# def handle_submission(name, question, constraints, tags, question_type, algorithm, test_cases, file_upload):
-#     data = {
-#         "name": name,
-#         "question": question,
-#         "constraints": constraints,
-#         "difficulty_level": tags,
-#         "question_type": question_type,
-#         "algorithm": algorithm,
-#         "test_cases": [{"input": inp, "output": out} for inp, out in test_cases],
-#         "file_upload": file_upload.name if file_upload else None
-#     }
-    
-#     json_file_path = "submission.json"
-#     with open(json_file_path, "w") as f:
-#         json.dump(data, f, indent=4)
-    
-#     if file_upload:
-#         file_path = os.path.join("uploads", file_upload.name)
-#         with open(file_path, "wb") as f:
-#             f.write(file_upload.getbuffer())
-#     else:
-#         file_path = None
-
-#     asyncio.run(send_message_with_file(data, json_file_path))
-    
-#     st.success("Form submitted successfully!")
-#     st.write("Data saved to submission.json")
-
-#     if file_path:
-#         os.remove(file_path)
-#     os.remove(json_file_path)
-
 async def send_message_with_file(json_file_path):
     with open(json_file_path, 'rb') as f:
         await bot.send_document(chat_id=CHANNEL_ID, document=f)
 
 # Function to handle form submission
-def handle_submission(name, question, constraints, tags, question_type, algorithm, test_cases, file_upload):
+def handle_submission(name, question, constraints, tags, question_type, algorithm, explanation, test_cases, file_upload):
     data = {
         "name": name,
         "question": question,
@@ -266,6 +224,7 @@ def handle_submission(name, question, constraints, tags, question_type, algorith
         "difficulty_level": tags,
         "question_type": question_type,
         "algorithm": algorithm,
+        "explanation": explanation,
         "test_cases": [{"input": inp, "output": out} for inp, out in test_cases],
         "file_upload": None  # Placeholder for file data
     }
@@ -306,6 +265,7 @@ with col2:
     tags = st.selectbox("Select the Difficulty Level", ["default","Easy", "Medium", "Hard"], key="tags")
     question_type = st.text_input("Enter the Type of Question", help="E.g., Array, String, Dynamic Programming", key="question_type")
     algorithm = st.text_area("Enter the Algorithm", height=200, key="algorithm")
+    explanation = st.text_area("Enter the Explanation", height=200, key="explanation")
     file_upload = st.file_uploader("Upload a file (optional) any image related to the Question ", type=["jpeg","pdf","png","jpg"], key="file_upload")
     
     # Test cases section
@@ -352,24 +312,15 @@ with col2:
                 st.error("Please enter the type of question.")
             elif not algorithm.strip():
                 st.error("Algorithm field cannot be empty.")
+            elif not explanation.strip():
+                st.error("Explanation field cannot be empty.")
             elif tags == "default":
                 st.error("Please select a valid difficulty level.")
             elif name == "Default":
                 st.error("Please select your name.")
             else:
-                handle_submission(name, question, constraints, tags, question_type, algorithm, st.session_state.test_cases, file_upload)
+                handle_submission(name, question, constraints, tags, question_type, algorithm, explanation, st.session_state.test_cases, file_upload)
     
   
 if __name__ == "__main__":
     pass
-
-
-
-
-
-
-
-
-
-
-
